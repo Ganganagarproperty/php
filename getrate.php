@@ -1,36 +1,28 @@
 <?php
-
 $url = "https://my.ithinklogistics.com/api_v3/rate/check.json";
-
 $data = array(
     "data" => array(
-        "from_pincode" => $_GET['from_pincode'],
-        "to_pincode" => $_GET['to_pincode'],
-        "shipping_length_cms" => $_GET['shipping_length_cms'],
-        "shipping_width_cms" => $_GET['shipping_width_cms'],
-        "shipping_height_cms" => $_GET['shipping_height_cms'],
-        "shipping_weight_kg" => $_GET['shipping_weight_kg'],
-        "order_type" => $_GET['order_type'],
-        "payment_method" => $_GET['payment_method'],
-        "product_mrp" => $_GET['product_mrp'],
-        "access_token" => $_GET['access_token'],
-        "secret_key" => $_GET['secret_key']
+        "from_pincode" =>560078 ,
+        "to_pincode" => 335001,
+        "shipping_length_cms" =>12,
+        "shipping_width_cms" => 8,
+        "shipping_height_cms" => 2,
+        "shipping_weight_kg" =>0.5,
+        "order_type" => forward,
+        "payment_method" => prepaid,
+        "product_mrp" => 85,
+        "access_token" => bdf8a98e100c3df26ef69290849639d0,
+        "secret_key" =>f6a4123ac76bbd4f10dd296f03c0d047
     )
 );
-
-$data_string = json_encode($data);
-
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-    'Content-Type: application/json',
-    'Content-Length: ' . strlen($data_string))
+$options = array(
+    "http" => array(
+        "header" => "Content-type: application/json\r\n",
+        "method" => "POST",
+        "content" => json_encode($data)
+    )
 );
-
-$result = curl_exec($ch);
-
+$context = stream_context_create($options);
+$result = file_get_contents($url, false, $context);
 echo $result;
-
 ?>
