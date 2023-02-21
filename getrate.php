@@ -1,6 +1,7 @@
 <?php
-header('Content-Type: application/json');
+
 $url = "https://my.ithinklogistics.com/api_v3/rate/check.json";
+
 $data = array(
     "data" => array(
         "from_pincode" => $_GET['from_pincode'],
@@ -16,14 +17,20 @@ $data = array(
         "secret_key" => $_GET['secret_key']
     )
 );
-$options = array(
-    "http" => array(
-        "header" => "Content-type: application/json\r\n",
-        "method" => "POST",
-        "content" => json_encode($data)
-    )
+
+$data_string = json_encode($data);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($data_string))
 );
-$context = stream_context_create($options);
-$result = file_get_contents($url, false, $context);
+
+$result = curl_exec($ch);
+
 echo $result;
+
 ?>
