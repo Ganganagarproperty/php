@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 $url = "https://my.ithinklogistics.com/api_v3/rate/check.json";
 $data = array(
     "data" => array(
